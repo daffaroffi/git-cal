@@ -1,86 +1,53 @@
 # git-cal
 
-### Description
-`git-cal` is a simple script to view your git contribution calendar (similar to GitHub's contribution graph) directly in your terminal.
+git-cal is a simple tool to view your Git contribution calendar directly in your terminal, similar to the contribution graph on a GitHub profile.
 
-![screenshot with black theme](https://raw.github.com/k4rthik/git-cal/master/screenshots/img1.png)
-
-### Features
-*   **GitHub-style Calendar**: View commits over the past year in a 53x7 grid.
-*   **Multiple Formats**: Support for ANSI colors, Unicode, and ASCII.
-*   **Time Travel**: Use `--since` and `--anchor` to view history from any point in time.
-*   **Author Filtering**: Filter contributions by a specific author.
-*   **Zero Dependencies**: Works with standard Perl (core modules only).
-
----
-
-### Installation
-
-#### Option 1: Quick Run (No Install)
-Simply clone and run:
-```bash
-chmod +x git-cal
-./git-cal
-```
-
-#### Option 2: Local Install
-```bash
-perl Makefile.PL PREFIX=~/.local
-make
-make install
-```
+### Modern Features
+This tool has been updated to work with legacy repositories and modern workspaces:
+*   **Workspace Auto-Scan**: Point to a root folder, and the script will automatically find and aggregate data from all Git repositories inside it.
+*   **Time Travel**: View contribution history from any year or period using the --since and --anchor options.
+*   **Aggregate View**: Combine history from multiple repositories into a single calendar view.
+*   **Zero Dependencies**: Works with standard Perl available on most Linux systems.
 
 ---
 
 ### Usage
 
-#### Basic Usage
-View contributions for the last 13 months in the current repository:
+#### 1. Basic Usage
+Run inside any Git repository:
 ```bash
-git-cal
+./git-cal
 ```
 
-#### Time Travel (Legacy Projects)
-If you want to see contributions from a specific year or period:
+#### 2. Scan an Entire Workspace
+If you have a folder containing multiple projects (e.g., /home/user/projects), you can view the aggregate activity of all of them:
 ```bash
-# View contributions in 2015
-git-cal --since="15 years" --anchor="2015-12-31"
-
-# View the last 2 years
-git-cal --since="2 years"
+./git-cal "/home/user/projects/"
 ```
 
-#### Customization
+#### 3. View Old History
+To view contributions from a specific past period, such as the year 2015:
 ```bash
-# Use Unicode blocks instead of ANSI colors
-git-cal --unicode
-
-# Filter by author
-git-cal --author="John Doe"
-
-# Show only specific months (e.g., 1=Jan, 2=Feb)
-git-cal --period=2
+./git-cal --since="15 years" --anchor="2015-12-31"
 ```
 
-#### Pro Tip: View All Projects
-If you have a folder with multiple projects and want to see aggregate activity, you can use this command:
+#### 4. Filter by Author
 ```bash
-# 1. Collect all timestamps into a file
-find /path/to/projects/ -maxdepth 2 -name .git -type d -exec git --git-dir={} log --all --pretty=format:"%at" \; > /tmp/all_commits.txt
-
-# 2. View the calendar using the collected file
-git-cal --file /tmp/all_commits.txt
+./git-cal --author="Your Name"
 ```
 
 ---
 
-### Git Config
-You can save your preferences in your git config:
+### Installation
+Ensure the git-cal file has execution permissions:
 ```bash
-git config --global calendar.format unicode
-git config --global calendar.since "1 year"
+chmod +x git-cal
 ```
 
-### License
-MIT License
+---
+
+### Credits and License
+This tool is a modernized version of the original project created by:
+*   **Original Author**: Karthik Katooru ([@k4rthik](https://github.com/k4rthik))
+*   **License**: MIT License
 
