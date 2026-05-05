@@ -8,8 +8,10 @@ use Getopt::Long;
 use Pod::Usage;
 use Time::Local;
 use Data::Dumper;
+use File::Basename;
 
 binmode(STDOUT, ":utf8");
+binmode(STDERR, ":utf8");
 #command line options
 my ( $help, $period, $use_ascii, $use_ansi, $use_unicode, $format, $author, $filepath, $all_branches, $since, $anchor, $input_file );
 
@@ -35,7 +37,7 @@ $filepath = shift @ARGV;
 #qw(⬚ ▢ ▤ ▣ ⬛)
 
 my @unicode = qw(⬚ ▢ ▤ ▣ ⬛);
-my @colors = ( 237, 139, 40, 190, 1 );
+my @colors = ( 236, 22, 28, 34, 40 ); # Vibrant Green Gradient (ANSI 256)
 my @ascii = ( " ", ".", "o", "O", "0" );
 my @months = qw (Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
 
@@ -77,7 +79,8 @@ sub process_current_repo {
         close($fh);
     } elsif ($filepath && -d $filepath && !-d "$filepath/.git") {
         # Workspace mode: Scan for sub-repositories
-        print "Scanning workspace: $filepath\n";
+        my $display_name = basename($filepath) . "/";
+        print "\e[1;34mScanning Workspace:\e[0m \e[3m$display_name\e[0m\n";
         my @repos;
         # Find directories containing .git (depth 2 should be enough for most project structures)
         opendir(my $dh, $filepath) or die "Can't opendir $filepath: $!";
@@ -359,12 +362,15 @@ sub print_grid {
     print "\n\n";
     printf "%" . ( 2 * ( $row_end - $row_start ) + $space - 15 ) . "s", "Less ";    #such that the right borders align
     print_block($_) foreach ( 0 .. 4 );
-    print " More\n";
+    print " More\n\n";
 
-    printf "%4d: Total commits\n", $stat{total_commits};
-    print_message( $stat{max_streak_weekdays}, $stat{max_weekdays_start}, $stat{max_weekdays_end}, "Longest streak excluding weekends" );
-    print_message( $stat{max_streak},          $stat{max_start},          $stat{max_end},          "Longest streak including weekends" );
+    print "\e[1;32mCONTRIBUTION STATS\e[0m\n";
+    print "\e[2m" . ("─" x 50) . "\e[0m\n";
+    printf "  \e[1m%4d\e[0m Total commits\n", $stat{total_commits};
+    print_message( $stat{max_streak_weekdays}, $stat{max_weekdays_start}, $stat{max_weekdays_end}, "Longest streak (weekdays)" );
+    print_message( $stat{max_streak},          $stat{max_start},          $stat{max_end},          "Longest streak (total)" );
     print_message( $stat{cur_streak_weekdays}, $stat{cur_weekdays_start}, $max_epoch,              "Current streak" );
+    print "\e[2m" . ("─" x 50) . "\e[0m\n";
 }
 
 
@@ -428,10 +434,10 @@ sub print_message {
             my $s = sprintf( "%3s %2d %4d", $months[$mon], $mday, ( 1900 + $year ) );
             push @range, $s;
         }
-        printf "%4d: Days ( %-25s ) - %-40s\n", $days, ( join " - ", @range ), $message;
+        printf "  \e[1m%4d\e[0m Days ( %-25s ) - %s\n", $days, ( join " - ", @range ), $message;
     }
     else {
-        printf "%4d: Days - %-40s\n", $days, $message;
+        printf "  \e[1m%4d\e[0m Days - %s\n", $days, $message;
     }
 }
 
