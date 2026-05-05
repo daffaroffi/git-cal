@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+BEGIN { $ENV{LC_ALL} = 'C'; } # Fix locale warnings
+
 use utf8;
 use Getopt::Long;
 use Pod::Usage;
@@ -384,7 +386,8 @@ sub print_block {
     $_
       = ( $format eq "ascii" ) ? "${ascii[$index]} "
       : ( $format eq "unicode" ) ? "${unicode[$index]} "
-      :                            "\e[38;5;$colors[$index]m\x{25fc} \e[0m";
+      :                            "\e[38;5;$colors[$index]m\x{2588} \e[0m";
+
     print;
 }
 
