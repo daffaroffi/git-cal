@@ -102,6 +102,10 @@ sub process_current_repo {
             my $git_cmd = git_command($repo);
             push @epochs, qx/$git_cmd/;
         }
+    } elsif ($filepath && -d "$filepath/.git") {
+        # Specific repository mode (outside current directory)
+        my $git_cmd = git_command($filepath);
+        @epochs = qx/$git_cmd/;
     } else {
         my $git_command = git_command();
         @epochs      = qx/$git_command/;
