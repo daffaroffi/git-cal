@@ -7,7 +7,28 @@ BEGIN { $ENV{LC_ALL} = 'C'; } # Fix locale warnings
 
 use utf8;
 use Getopt::Long;
-use Pod::Usage;
+BEGIN {
+    eval {
+        require Pod::Usage;
+        Pod::Usage->import('pod2usage');
+        1;
+    } or do {
+        *pod2usage = sub {
+            my $exit_val = @_ ? shift : 0;
+            print "Usage: git-cal [options] [filepath]\n";
+            print "Options:\n";
+            print "  --since=<date_str>     e.g. '1 year ago', '2020-01-01'\n";
+            print "  --anchor=<YYYY-MM-DD>  Anchor calendar to a specific date/year\n";
+            print "  --author=<author>      Filter commits by author\n";
+            print "  --all                  Include stats from all branches\n";
+            print "  --ascii                Display using ASCII characters\n";
+            print "  --ansi                 Display using ANSI colors\n";
+            print "  --unicode              Display using Unicode characters\n";
+            print "  --help                 Print help\n";
+            exit($exit_val);
+        };
+    };
+}
 use Time::Local;
 use Data::Dumper;
 use File::Basename;
