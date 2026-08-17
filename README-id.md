@@ -6,7 +6,7 @@
 
 git-cal adalah alat sederhana untuk melihat kalender kontribusi Git Anda langsung di terminal, mirip dengan grafik kontribusi di profil GitHub.
 
-![Tangkapan Layar Kalender Git](screenshots/Screenshot%202026-08-17%20224645.png)
+![Tangkapan Layar Kalender Git](screenshots/screenshot.png)
 
 ### Fitur Modern
 Alat ini telah diperbarui agar berfungsi dengan repositori lama dan workspace modern:
