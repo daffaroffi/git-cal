@@ -2,7 +2,7 @@
 
 git-cal is a simple tool to view your Git contribution calendar directly in your terminal, similar to the contribution graph on a GitHub profile.
 
-![Git Calendar Screenshot](screenshots/img1.png)
+![Git Calendar Screenshot](screenshots/Screenshot%202026-08-17%20224645.png)
 
 
 ### Modern Features
